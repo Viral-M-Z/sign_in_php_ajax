@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="d-flex justify-content-center">
+    <form class="col-sm-4" action="register.php" method="POST">
+    <!-- <form class="col-sm-4" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST"> -->
+        <p class="h3 my-4 mb-4 text-center">Sign up</p>
+        <div class="form-group row">
+            <label for="text_name" class="col-3 col-form-label">Name</label> 
+            <div class="col-9">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-user"></i>
+                        </div>
+                    </div> 
+                    <input id="text_first_name" minlength="3" maxlength="40" name="text_first_name" placeholder="Enter First Name" type="text" class="form-control" required="required">
+                    <input id="text_last_name" minlength="3" maxlength="40" name="text_last_name" placeholder="Enter Last Name" type="text" class="form-control" required="required">
+                </div>
+                <small class="form-text text-muted">Minimal 3 characters length in both</small>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="text_email" class="col-3 col-form-label">Email</label> 
+            <div class="col-9">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                    </div> 
+                    <input id="text_email" name="text_email" placeholder="Enter Email" type="email" minlength="15" maxlength="40" class="form-control" required="required">
+                </div>
+                <small class="form-text text-muted">Minimal 15 characters length</small>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="text_pwd" class="col-3 col-form-label">Password</label> 
+            <div class="col-9">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-lock"></i>
+                        </div>
+                    </div>
+                    <input type="password" id="text_pwd" minlength="8" maxlength="40" name="text_pwd" id="defaultRegisterPhonePassword" placeholder="Enter Password" class="form-control" required aria-describedby="defaultRegisterFormPasswordHelpBlock">
+                </div>
+                <small id="defaultRegisterFormPhoneHelpBlock" class="form-text text-muted">Minimal 8 characters length</small>
+            </div>
+        </div>
+        <div class="form-group row mb-4">
+            <label for="text_phone" class="col-3 col-form-label ">Phone</label> 
+            <div class="col-9">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                    </div> 
+                    <input id="text_phone" name="text_phone" minlength="10" maxlength="10" placeholder="Enter Phone Number" type="phone" class="form-control" required="required">
+                </div>
+                <!-- <small id="defaultRegisterFormPhoneHelpBlock" class="form-text text-muted mb-4">Optional - for two step authentication</small> -->
+            </div>
+        </div> 
+        <div class="form-group row my-4">
+            <div class="offset-3 col-12">
+                <button name="submit" type="submit" class="btn btn-primary text-center col-6">Register</button>
+            </div>
+        </div>
+        <div class="text-center">
+            <p>Already have an account?
+                <a href="sign_in_.php">Sign In</a>
+            </p>
+        </div>
+    </form>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
+
+<!-- <?php 
+
+    include("database_connection.php");
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if(isset($_POST['submit'])) {
+            if($_POST['text_first_name']=='' || $_POST['text_email']=='' || $_POST['text_pwd']==''|| $_POST['text_phone']=='') {
+                echo "please fill the empty field.";
+            } else {
+                // hashing 
+                $pwd = $_POST['text_pwd'].$salt_in_pwd;
+                // echo "\n $pwd";
+                $salt_pwd = md5($pwd);
+                // echo "\n".$salt_pwd;
+                // end hashing
+    
+                $full_name = $_POST['text_first_name']." ".$_POST['text_last_name'];
+                $email = $_POST['text_email'];
+                $mobile = $_POST['text_phone'];
+    
+    
+                // echo("\n $full_name $email $salt_pwd $mobile ");
+                $sql="insert into stud_info(name,email,password,phone) values('$full_name', '$email', '$salt_pwd', $mobile)";
+                // echo("\n $sql");
+                // $res=mysqli_query($con,$sql);
+                if($con->query($sql) === TRUE) {
+                    // echo "Record successfully inserted";
+                    // echo "<a href='sign_in.html'>Sign In</a>";
+                    header('Location: http://localhost/projects/simple-project-php/sign_in_.php');
+                }
+                else {
+                    echo "There is some problem in inserting record";
+                }
+            }
+        }
+    }
+
+?> -->
