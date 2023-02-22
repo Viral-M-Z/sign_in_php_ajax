@@ -21,7 +21,18 @@
             }
             else {
                 if (preg_match("/^[0-9]{10}+$/",$mobile)) {
-                    $sql="insert into stud_info(name,email,password,phone) values('$full_name', '$email', '$salt_pwd', $mobile)";
+                    // $sql="insert into stud_info(name,email,password,phone) values('$full_name', '$email', '$salt_pwd', $mobile)";
+                    $stmt = $con->prepare("INSERT INTO stud_info(name,email,password,phone) VALUES (?, ?, ?, ?)");
+                    $name = $full_name;
+                    $mail = $email;
+                    $pwd = $salt_pwd;
+                    $mob = $mobile;
+                    $stmt->bind_param("sssi", $name, $mail, $pwd, $mob);
+                    $stmt->execute();
+  
+                    $stmt->close();
+
+                    header('Location: http://localhost/projects/simple-project-php/goto_sign_in.html');
                 }
             }
 
@@ -29,14 +40,14 @@
             // echo("\n $sql");
             // $res=mysqli_query($con,$sql);
         }
-        if($con->query($sql) === TRUE) {
-            // echo "Record successfully inserted";
-            // echo "<a href='sign_in.html'>Sign In</a>";
-            header('Location: http://localhost/projects/simple-project-php/goto_sign_in.html');
-        }
-        else {
-            echo "There is some problem in inserting record";
-        }
+        // if($con->query($sql) === TRUE) {
+        //     // echo "Record successfully inserted";
+        //     // echo "<a href='sign_in.html'>Sign In</a>";
+        //     header('Location: http://localhost/projects/simple-project-php/goto_sign_in.html');
+        // }
+        // else {
+        //     echo "There is some problem in inserting record";
+        // }
     }
 
 ?>
