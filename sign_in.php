@@ -6,19 +6,21 @@
     // if(isset($_REQUEST['submit'])) {
         // $email=$_REQUEST['text_email'];
         // $pwd=$_REQUEST['text_pwd']."".$salt_in_pwd;
-        $email = $_POST['email'];
-        $pwd = $_POST['password'].$salt_in_pwd;
-        $salt_pwd=md5($pwd);
         // echo $email.$salt_pwd;
         // if($_POST['text_email']=='' || $_POST['text_pwd']=='') {
-        if ($_POST['email']=='' || $_POST['password']=='') {    
-            echo "please fill the empty field.";
-        } else {
-            if(isset($_SESSION['email_id'])) {
-                header("Location: http://localhost/projects/simple-project-php/welcome.php");
-            }
-            else {
-                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            if ($_POST['email']=='' || $_POST['password']=='') {    
+                echo "please fill the empty field.";
+            } else {
+                if(isset($_SESSION['email_id'])) {
+                    header("Location: http://localhost/projects/simple-project-php/welcome.php");
+                }
+                else {
+                    $email = $_POST['email'];
+
+                    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    
+                    $pwd = $_POST['password'].$salt_in_pwd;
+                    $salt_pwd=md5($pwd);
 
                     $sql = "SELECT password FROM `stud_info` WHERE email='$email'";
                     $result = mysqli_query($con,$sql);
@@ -27,9 +29,10 @@
                         // echo "Could not successfully run query ($sql) from DB: " . mysql_error();
                         $output = [
                             "status" => "NO",
-                            "message" => "Could not successfully run query ($sql) from DB: ".mysql_error(),
+                            // "message" => "Could not successfully run query ($sql) from DB: ".mysql_error(),
+                            "message" => "Something went wrong.",
                         ];
-                        exit;
+                        exit(json_encode($output));
                     }
                     
                     if (mysqli_num_rows($result) == 0) {
@@ -37,7 +40,7 @@
                             "status" => "NO",
                             "message" => "No rows found",
                         ];
-                        exit;
+                        exit(json_encode($output));
                     }
     
                     $row = $result -> fetch_array(MYSQLI_NUM);
